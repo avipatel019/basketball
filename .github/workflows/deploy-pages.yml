@@ -1,8 +1,13 @@
 name: Deploy to GitHub Pages
 
+# NOTE: GitHub Pages must be enabled once for this repo before this workflow
+# can publish: Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+# The Actions GITHUB_TOKEN cannot enable Pages automatically on the first run.
 on:
+  # Auto-deploy once changes land on the production branch.
   push:
-    branches: ["claude/upbeat-euler-tnjak7", "main"]
+    branches: ["main"]
+  # Allow manual runs (used to publish after Pages is enabled).
   workflow_dispatch:
 
 # Allow GITHUB_TOKEN to deploy to Pages and verify the deployment origin
