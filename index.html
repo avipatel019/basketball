@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ember &amp; Oak — Hand-poured Candles &amp; Signature Scents</title>
+  <meta name="description" content="Ember & Oak crafts hand-poured soy candles with signature scents — from warm vanilla amber to fresh sea salt sage. Find the fragrance that feels like home." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Announcement bar -->
+  <div class="announcement">
+    <p>Free shipping on orders over $60 · Hand-poured in small batches 🕯️</p>
+  </div>
+
+  <!-- Navigation -->
+  <header class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#top" class="nav__logo" aria-label="Ember and Oak home">
+        <span class="nav__logo-mark">🕯️</span>
+        <span class="nav__logo-text">Ember <em>&amp;</em> Oak</span>
+      </a>
+
+      <nav class="nav__links" id="navLinks" aria-label="Primary">
+        <a href="#shop">Shop</a>
+        <a href="#collections">Collections</a>
+        <a href="#finder">Scent Finder</a>
+        <a href="#story">Our Story</a>
+        <a href="#reviews">Reviews</a>
+      </nav>
+
+      <div class="nav__actions">
+        <button class="cart-btn" id="cartBtn" aria-label="View cart">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+            <path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+          <span class="cart-count" id="cartCount">0</span>
+        </button>
+        <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero__glow" aria-hidden="true"></div>
+      <div class="hero__content reveal">
+        <p class="eyebrow">Hand-poured soy candles</p>
+        <h1>Scents that turn a room<br />into a <em>feeling</em>.</h1>
+        <p class="hero__lead">
+          Slow-burning, clean fragrances crafted in small batches.
+          Discover the smell that feels like coming home — and light it tonight.
+        </p>
+        <div class="hero__cta">
+          <a href="#shop" class="btn btn--primary">Shop the collection</a>
+          <a href="#finder" class="btn btn--ghost">Find your scent →</a>
+        </div>
+        <ul class="hero__badges">
+          <li>100% Natural Soy</li>
+          <li>50+ Hour Burn</li>
+          <li>Cruelty-free</li>
+        </ul>
+      </div>
+
+      <div class="hero__art" aria-hidden="true">
+        <div class="big-candle">
+          <span class="big-candle__flame"></span>
+          <span class="big-candle__jar"></span>
+          <span class="big-candle__label">E&amp;O</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Value strip -->
+    <section class="values" aria-label="Why Ember and Oak">
+      <div class="values__item reveal">
+        <span class="values__icon">🌿</span>
+        <h3>Clean ingredients</h3>
+        <p>Natural soy &amp; coconut wax with lead-free cotton wicks.</p>
+      </div>
+      <div class="values__item reveal">
+        <span class="values__icon">🔥</span>
+        <h3>Long, even burn</h3>
+        <p>50–60 hours of flickering glow per jar, edge to edge.</p>
+      </div>
+      <div class="values__item reveal">
+        <span class="values__icon">🤲</span>
+        <h3>Made by hand</h3>
+        <p>Poured in small batches, never mass-produced.</p>
+      </div>
+      <div class="values__item reveal">
+        <span class="values__icon">♻️</span>
+        <h3>Reusable vessels</h3>
+        <p>Tumblers designed for a second life when the wax is gone.</p>
+      </div>
+    </section>
+
+    <!-- Collections -->
+    <section class="collections" id="collections">
+      <div class="section-head reveal">
+        <p class="eyebrow">Browse by mood</p>
+        <h2>Four worlds of scent</h2>
+        <p class="section-sub">Every fragrance belongs to a family. Find the one that matches your moment.</p>
+      </div>
+      <div class="collections__grid">
+        <button class="collection-card collection-card--fresh reveal" data-filter="fresh">
+          <span class="collection-card__emoji">🌊</span>
+          <h3>Fresh</h3>
+          <p>Crisp, clean &amp; airy</p>
+        </button>
+        <button class="collection-card collection-card--warm reveal" data-filter="warm">
+          <span class="collection-card__emoji">🍯</span>
+          <h3>Warm</h3>
+          <p>Sweet, cozy &amp; spiced</p>
+        </button>
+        <button class="collection-card collection-card--woody reveal" data-filter="woody">
+          <span class="collection-card__emoji">🪵</span>
+          <h3>Woody</h3>
+          <p>Smoky, earthy &amp; deep</p>
+        </button>
+        <button class="collection-card collection-card--floral reveal" data-filter="floral">
+          <span class="collection-card__emoji">🌸</span>
+          <h3>Floral</h3>
+          <p>Soft, romantic &amp; lush</p>
+        </button>
+      </div>
+    </section>
+
+    <!-- Shop / Products -->
+    <section class="shop" id="shop">
+      <div class="section-head reveal">
+        <p class="eyebrow">The collection</p>
+        <h2>Find your signature scent</h2>
+        <p class="section-sub">Eight fragrances, each hand-poured into a reusable amber-glass tumbler.</p>
+      </div>
+
+      <div class="filters" id="filters" role="tablist" aria-label="Filter candles by scent family">
+        <button class="filter is-active" data-filter="all">All</button>
+        <button class="filter" data-filter="fresh">Fresh</button>
+        <button class="filter" data-filter="warm">Warm</button>
+        <button class="filter" data-filter="woody">Woody</button>
+        <button class="filter" data-filter="floral">Floral</button>
+      </div>
+
+      <div class="products" id="products">
+        <!-- product cards injected by script.js -->
+      </div>
+    </section>
+
+    <!-- Scent Finder -->
+    <section class="finder" id="finder">
+      <div class="finder__glow" aria-hidden="true"></div>
+      <div class="finder__inner reveal">
+        <p class="eyebrow eyebrow--light">Not sure where to start?</p>
+        <h2>Find your scent in one tap</h2>
+        <p class="finder__sub">Tell us the mood you're after and we'll match you with the perfect candle.</p>
+
+        <div class="finder__moods" id="moods" role="group" aria-label="Choose a mood">
+          <button class="mood" data-mood="relax">🛁 Unwind</button>
+          <button class="mood" data-mood="cozy">🛋️ Get cozy</button>
+          <button class="mood" data-mood="focus">📚 Focus</button>
+          <button class="mood" data-mood="romance">💫 Romance</button>
+          <button class="mood" data-mood="energize">☀️ Energize</button>
+        </div>
+
+        <div class="finder__result" id="finderResult" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- Story -->
+    <section class="story" id="story">
+      <div class="story__art reveal" aria-hidden="true">
+        <div class="story__candle"><span class="story__flame"></span></div>
+        <div class="story__candle story__candle--sm"><span class="story__flame"></span></div>
+      </div>
+      <div class="story__text reveal">
+        <p class="eyebrow">Our story</p>
+        <h2>Born from one quiet evening</h2>
+        <p>
+          Ember &amp; Oak started in a tiny kitchen, with a single pot of melted
+          soy wax and a stubborn belief that a candle should do more than smell
+          nice — it should change the temperature of a whole room.
+        </p>
+        <p>
+          Today we still pour every candle by hand, blending fragrance oils with
+          natural essential oils until each scent feels honest, layered, and
+          unmistakably ours. No shortcuts, no synthetic harshness — just warmth
+          you can light.
+        </p>
+        <div class="story__stats">
+          <div><strong>40k+</strong><span>candles poured</span></div>
+          <div><strong>100%</strong><span>natural wax</span></div>
+          <div><strong>4.9★</strong><span>average rating</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="reviews" id="reviews">
+      <div class="section-head reveal">
+        <p class="eyebrow">Loved by 12,000+ homes</p>
+        <h2>What our people say</h2>
+      </div>
+      <div class="reviews__grid">
+        <figure class="review reveal">
+          <div class="review__stars">★★★★★</div>
+          <blockquote>"Smoked Cedar &amp; Leather makes my apartment smell like a cozy mountain cabin. I've bought it four times."</blockquote>
+          <figcaption>— Maya R., verified buyer</figcaption>
+        </figure>
+        <figure class="review reveal">
+          <div class="review__stars">★★★★★</div>
+          <blockquote>"The scent throw is unreal — one candle fills my whole downstairs. And it burns so evenly."</blockquote>
+          <figcaption>— Daniel K., verified buyer</figcaption>
+        </figure>
+        <figure class="review reveal">
+          <div class="review__stars">★★★★★</div>
+          <blockquote>"Sea Salt &amp; Sage is my forever scent. Fresh without being soapy. The jar is gorgeous too."</blockquote>
+          <figcaption>— Priya S., verified buyer</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+      <div class="newsletter__inner reveal">
+        <h2>Get 15% off your first candle</h2>
+        <p>Join the list for new scents, slow-living notes, and the occasional members-only burn.</p>
+        <form class="newsletter__form" id="newsletterForm" novalidate>
+          <label class="sr-only" for="email">Email address</label>
+          <input type="email" id="email" name="email" placeholder="you@example.com" required />
+          <button type="submit" class="btn btn--primary">Light me up</button>
+        </form>
+        <p class="newsletter__note" id="newsletterNote"></p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__grid">
+      <div class="footer__brand">
+        <span class="nav__logo-text">Ember <em>&amp;</em> Oak</span>
+        <p>Hand-poured candles &amp; signature scents, made in small batches.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Shop</h4>
+        <a href="#shop">All candles</a>
+        <a href="#collections">Collections</a>
+        <a href="#finder">Scent finder</a>
+        <a href="#shop">Gift sets</a>
+      </div>
+      <div class="footer__col">
+        <h4>Company</h4>
+        <a href="#story">Our story</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#">Sustainability</a>
+        <a href="#">Stockists</a>
+      </div>
+      <div class="footer__col">
+        <h4>Help</h4>
+        <a href="#">Shipping</a>
+        <a href="#">Returns</a>
+        <a href="#">Candle care</a>
+        <a href="#">Contact</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© <span id="year"></span> Ember &amp; Oak. Crafted with warmth.</p>
+      <div class="footer__social" aria-label="Social media">
+        <a href="#" aria-label="Instagram">Instagram</a>
+        <a href="#" aria-label="Pinterest">Pinterest</a>
+        <a href="#" aria-label="TikTok">TikTok</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
