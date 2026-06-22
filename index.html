@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hoops3 — Open &amp; Customizable 3v3 Basketball Tournament Maker</title>
+  <meta name="description" content="Build and run your own 3v3 basketball tournament. Single elimination, round robin, or pool play + playoffs. Custom rules, live scoreboards, standings, and export — all in your browser." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- ====================== Top app bar ====================== -->
+  <header class="appbar">
+    <div class="appbar__inner">
+      <a href="#" class="brand" aria-label="Hoops3 home">
+        <span class="brand__mark" aria-hidden="true">🏀</span>
+        <span class="brand__text">Hoops<span class="brand__three">3</span></span>
+      </a>
+
+      <div class="appbar__title">
+        <input id="tourneyName" class="appbar__name" type="text" maxlength="48"
+               value="My 3v3 Tournament" aria-label="Tournament name" />
+      </div>
+
+      <div class="appbar__actions">
+        <button id="importBtn" class="btn btn--ghost" type="button" title="Import a saved tournament (.json)">Import</button>
+        <button id="exportBtn" class="btn btn--ghost" type="button" title="Download this tournament as a .json file">Export</button>
+        <button id="newBtn" class="btn btn--ghost" type="button" title="Start over with a blank tournament">New</button>
+        <button id="themeBtn" class="icon-btn" type="button" aria-label="Toggle light or dark theme" title="Toggle theme">
+          <span class="icon-btn__sun" aria-hidden="true">☀️</span>
+          <span class="icon-btn__moon" aria-hidden="true">🌙</span>
+        </button>
+        <input id="importFile" type="file" accept="application/json,.json" hidden />
+      </div>
+    </div>
+
+    <!-- View tabs -->
+    <nav class="tabs" id="tabs" aria-label="Views">
+      <button class="tab is-active" data-view="setup" type="button">Setup</button>
+      <button class="tab" data-view="bracket" type="button" id="tabBracket">Games</button>
+      <button class="tab" data-view="standings" type="button" id="tabStandings" hidden>Standings</button>
+    </nav>
+  </header>
+
+  <main class="main">
+    <!-- ====================== SETUP VIEW ====================== -->
+    <section class="view is-active" id="view-setup" aria-label="Tournament setup">
+      <div class="wrap">
+        <p class="hero-kicker">Open &amp; fully customizable</p>
+        <h1 class="hero-title">Run your own <span class="accent">3&times;3</span> hoops tournament</h1>
+        <p class="hero-sub">Pick a format, add as many teams as you want, bend the rules to fit your run,
+          and keep score live. Everything saves in your browser — no account, no sign-up.</p>
+
+        <!-- 1. Format -->
+        <div class="panel">
+          <div class="panel__head">
+            <h2 class="panel__title"><span class="step">1</span> Choose a format</h2>
+          </div>
+          <div class="format-grid" id="formatGrid" role="radiogroup" aria-label="Tournament format">
+            <button class="format-card is-selected" role="radio" aria-checked="true" data-format="single" type="button">
+              <span class="format-card__icon" aria-hidden="true">🏆</span>
+              <span class="format-card__name">Single Elimination</span>
+              <span class="format-card__desc">Win or go home. Classic knockout bracket — byes handled automatically.</span>
+            </button>
+            <button class="format-card" role="radio" aria-checked="false" data-format="round-robin" type="button">
+              <span class="format-card__icon" aria-hidden="true">🔁</span>
+              <span class="format-card__name">Round Robin</span>
+              <span class="format-card__desc">Everyone plays everyone. Live standings decide the winner.</span>
+            </button>
+            <button class="format-card" role="radio" aria-checked="false" data-format="rr-playoffs" type="button">
+              <span class="format-card__icon" aria-hidden="true">🥇</span>
+              <span class="format-card__name">Pool Play + Playoffs</span>
+              <span class="format-card__desc">Round-robin pool, then the top teams advance to a knockout bracket.</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2. Rules -->
+        <div class="panel">
+          <div class="panel__head">
+            <h2 class="panel__title"><span class="step">2</span> Set the rules</h2>
+            <button class="link-btn" id="resetRules" type="button">Reset to FIBA 3x3</button>
+          </div>
+
+          <div class="rules-grid">
+            <label class="field">
+              <span class="field__label">Game to (points)</span>
+              <input class="field__input" id="ruleTarget" type="number" min="1" max="200" step="1" value="21" />
+              <span class="field__hint">First to this score wins the game.</span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Scoring style</span>
+              <select class="field__input" id="ruleScoring">
+                <option value="1-2" selected>FIBA 3x3 — 1 &amp; 2 pts</option>
+                <option value="2-3">Streetball — 2 &amp; 3 pts</option>
+                <option value="1-2-3">Custom — 1, 2 &amp; 3 pts</option>
+              </select>
+              <span class="field__hint">Which point buttons appear on the scoreboard.</span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Time limit (min)</span>
+              <input class="field__input" id="ruleTime" type="number" min="0" max="120" step="1" value="10" />
+              <span class="field__hint">Game clock length. Use 0 for no clock.</span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Courts</span>
+              <input class="field__input" id="ruleCourts" type="number" min="1" max="20" step="1" value="1" />
+              <span class="field__hint">How many games can run at once.</span>
+            </label>
+
+            <label class="field field--check">
+              <input type="checkbox" id="ruleWinBy2" />
+              <span class="field__label">Win by 2</span>
+              <span class="field__hint">Game continues past the target until a team leads by two.</span>
+            </label>
+
+            <label class="field field--check" id="dblRRField" hidden>
+              <input type="checkbox" id="ruleDoubleRR" />
+              <span class="field__label">Double round robin</span>
+              <span class="field__hint">Every pairing plays twice.</span>
+            </label>
+
+            <label class="field" id="advanceField" hidden>
+              <span class="field__label">Teams that advance</span>
+              <input class="field__input" id="ruleAdvance" type="number" min="2" max="64" step="1" value="4" />
+              <span class="field__hint">Top finishers from the pool make the playoff bracket.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 3. Teams -->
+        <div class="panel">
+          <div class="panel__head">
+            <h2 class="panel__title"><span class="step">3</span> Add teams <span class="count-pill" id="teamCount">0</span></h2>
+            <div class="panel__head-actions">
+              <button class="link-btn" id="shuffleSeeds" type="button" title="Randomize the seeding order">Shuffle seeds</button>
+              <button class="link-btn link-btn--danger" id="clearTeams" type="button">Clear all</button>
+            </div>
+          </div>
+
+          <div class="teams" id="teamList" aria-label="Teams"></div>
+
+          <div class="team-add">
+            <span class="team-add__swatch" id="addSwatch" aria-hidden="true"></span>
+            <input class="team-add__input" id="teamInput" type="text" maxlength="32"
+                   placeholder="Team name — e.g. Court Kings" aria-label="New team name" />
+            <button class="btn btn--accent" id="addTeam" type="button">Add team</button>
+          </div>
+          <p class="team-add__hint">Tip: paste a list and we'll add one team per line. Click a team's dot to recolor it,
+            or expand it to add players.</p>
+        </div>
+
+        <!-- Generate -->
+        <div class="generate">
+          <button class="btn btn--big btn--accent" id="generateBtn" type="button">Generate bracket &amp; tip off →</button>
+          <p class="generate__note" id="generateNote">Add at least 2 teams to start.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====================== GAMES / BRACKET VIEW ====================== -->
+    <section class="view" id="view-bracket" aria-label="Games">
+      <div class="wrap">
+        <div id="championBanner" class="champion" hidden></div>
+
+        <div class="games-toolbar">
+          <div class="games-toolbar__info" id="bracketInfo"></div>
+          <div class="games-toolbar__actions">
+            <button class="btn btn--ghost" id="printBtn" type="button" title="Print or save the bracket as a PDF">Print</button>
+            <button class="btn btn--ghost" id="startPlayoffsBtn" type="button" hidden>Start playoffs →</button>
+            <button class="btn btn--ghost" id="backToSetup" type="button">Edit setup</button>
+          </div>
+        </div>
+
+        <div id="bracketStage"></div>
+      </div>
+    </section>
+
+    <!-- ====================== STANDINGS VIEW ====================== -->
+    <section class="view" id="view-standings" aria-label="Standings">
+      <div class="wrap">
+        <div class="games-toolbar">
+          <div class="games-toolbar__info"><h2 class="section-title">Standings</h2></div>
+        </div>
+        <div id="standingsStage"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ====================== SCOREBOARD MODAL ====================== -->
+  <div class="modal" id="scoreModal" hidden>
+    <div class="modal__backdrop" data-close="1"></div>
+    <div class="modal__card scoreboard" role="dialog" aria-modal="true" aria-label="Scoreboard">
+      <button class="modal__close" id="scoreClose" type="button" aria-label="Close scoreboard">&times;</button>
+
+      <div class="scoreboard__meta">
+        <span id="sbStage" class="scoreboard__stage">Game</span>
+        <span class="scoreboard__clock" id="sbClock">--:--</span>
+        <div class="scoreboard__clock-ctrls">
+          <button class="chip" id="clockToggle" type="button">Start</button>
+          <button class="chip" id="clockReset" type="button">Reset</button>
+        </div>
+      </div>
+
+      <div class="scoreboard__teams">
+        <!-- Team A -->
+        <div class="sb-team" id="sbTeamA">
+          <div class="sb-team__head">
+            <span class="sb-team__dot"></span>
+            <span class="sb-team__name">Team A</span>
+          </div>
+          <div class="sb-team__score" id="sbScoreA">0</div>
+          <div class="sb-team__buttons" id="sbBtnsA"></div>
+          <button class="sb-team__win btn btn--accent" data-side="A" type="button">Set winner</button>
+        </div>
+
+        <div class="scoreboard__vs">vs</div>
+
+        <!-- Team B -->
+        <div class="sb-team" id="sbTeamB">
+          <div class="sb-team__head">
+            <span class="sb-team__dot"></span>
+            <span class="sb-team__name">Team B</span>
+          </div>
+          <div class="sb-team__score" id="sbScoreB">0</div>
+          <div class="sb-team__buttons" id="sbBtnsB"></div>
+          <button class="sb-team__win btn btn--accent" data-side="B" type="button">Set winner</button>
+        </div>
+      </div>
+
+      <p class="scoreboard__hint" id="sbHint"></p>
+
+      <div class="scoreboard__foot">
+        <button class="btn btn--ghost" id="sbClear" type="button">Reset score</button>
+        <button class="btn btn--accent" id="sbFinish" type="button">Finish game</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <p>Built for pickup runs, office leagues &amp; weekend shootouts. Everything stays in your browser. 🏀</p>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
