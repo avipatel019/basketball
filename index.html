@@ -1,289 +1,254 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ember &amp; Oak — Hand-poured Candles &amp; Signature Scents</title>
-  <meta name="description" content="Ember & Oak crafts hand-poured soy candles with signature scents — from warm vanilla amber to fresh sea salt sage. Find the fragrance that feels like home." />
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕯️</text></svg>" />
+  <title>Hoops3 — Open &amp; Customizable 3v3 Basketball Tournament Maker</title>
+  <meta name="description" content="Build and run your own 3v3 basketball tournament. Single elimination, round robin, or pool play + playoffs. Custom rules, live scoreboards, standings, and export — all in your browser." />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🏀</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- Announcement bar -->
-  <div class="announcement">
-    <p>Free shipping on orders over $60 · Hand-poured in small batches 🕯️</p>
-  </div>
-
-  <!-- Navigation -->
-  <header class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="#top" class="nav__logo" aria-label="Ember and Oak home">
-        <span class="nav__logo-mark">🕯️</span>
-        <span class="nav__logo-text">Ember <em>&amp;</em> Oak</span>
+  <!-- ====================== Top app bar ====================== -->
+  <header class="appbar">
+    <div class="appbar__inner">
+      <a href="#" class="brand" aria-label="Hoops3 home">
+        <span class="brand__mark" aria-hidden="true">🏀</span>
+        <span class="brand__text">Hoops<span class="brand__three">3</span></span>
       </a>
 
-      <nav class="nav__links" id="navLinks" aria-label="Primary">
-        <a href="#shop">Shop</a>
-        <a href="#collections">Collections</a>
-        <a href="#finder">Scent Finder</a>
-        <a href="#story">Our Story</a>
-        <a href="#reviews">Reviews</a>
-      </nav>
+      <div class="appbar__title">
+        <input id="tourneyName" class="appbar__name" type="text" maxlength="48"
+               value="My 3v3 Tournament" aria-label="Tournament name" />
+      </div>
 
-      <div class="nav__actions">
-        <button class="cart-btn" id="cartBtn" aria-label="View cart">
-          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
-            <path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
-          </svg>
-          <span class="cart-count" id="cartCount">0</span>
+      <div class="appbar__actions">
+        <button id="importBtn" class="btn btn--ghost" type="button" title="Import a saved tournament (.json)">Import</button>
+        <button id="exportBtn" class="btn btn--ghost" type="button" title="Download this tournament as a .json file">Export</button>
+        <button id="newBtn" class="btn btn--ghost" type="button" title="Start over with a blank tournament">New</button>
+        <button id="themeBtn" class="icon-btn" type="button" aria-label="Toggle light or dark theme" title="Toggle theme">
+          <span class="icon-btn__sun" aria-hidden="true">☀️</span>
+          <span class="icon-btn__moon" aria-hidden="true">🌙</span>
         </button>
-        <button class="nav__toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
-          <span></span><span></span><span></span>
-        </button>
+        <input id="importFile" type="file" accept="application/json,.json" hidden />
       </div>
     </div>
+
+    <!-- View tabs -->
+    <nav class="tabs" id="tabs" aria-label="Views">
+      <button class="tab is-active" data-view="setup" type="button">Setup</button>
+      <button class="tab" data-view="bracket" type="button" id="tabBracket">Games</button>
+      <button class="tab" data-view="standings" type="button" id="tabStandings" hidden>Standings</button>
+    </nav>
   </header>
 
-  <main id="top">
-    <!-- Hero -->
-    <section class="hero">
-      <div class="hero__glow" aria-hidden="true"></div>
-      <div class="hero__content reveal">
-        <p class="eyebrow">Hand-poured soy candles</p>
-        <h1>Scents that turn a room<br />into a <em>feeling</em>.</h1>
-        <p class="hero__lead">
-          Slow-burning, clean fragrances crafted in small batches.
-          Discover the smell that feels like coming home — and light it tonight.
-        </p>
-        <div class="hero__cta">
-          <a href="#shop" class="btn btn--primary">Shop the collection</a>
-          <a href="#finder" class="btn btn--ghost">Find your scent →</a>
-        </div>
-        <ul class="hero__badges">
-          <li>100% Natural Soy</li>
-          <li>50+ Hour Burn</li>
-          <li>Cruelty-free</li>
-        </ul>
-      </div>
+  <main class="main">
+    <!-- ====================== SETUP VIEW ====================== -->
+    <section class="view is-active" id="view-setup" aria-label="Tournament setup">
+      <div class="wrap">
+        <p class="hero-kicker">Open &amp; fully customizable</p>
+        <h1 class="hero-title">Run your own <span class="accent">3&times;3</span> hoops tournament</h1>
+        <p class="hero-sub">Pick a format, add as many teams as you want, bend the rules to fit your run,
+          and keep score live. Everything saves in your browser — no account, no sign-up.</p>
 
-      <div class="hero__art" aria-hidden="true">
-        <div class="big-candle">
-          <span class="big-candle__flame"></span>
-          <span class="big-candle__jar"></span>
-          <span class="big-candle__label">E&amp;O</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- Value strip -->
-    <section class="values" aria-label="Why Ember and Oak">
-      <div class="values__item reveal">
-        <span class="values__icon">🌿</span>
-        <h3>Clean ingredients</h3>
-        <p>Natural soy &amp; coconut wax with lead-free cotton wicks.</p>
-      </div>
-      <div class="values__item reveal">
-        <span class="values__icon">🔥</span>
-        <h3>Long, even burn</h3>
-        <p>50–60 hours of flickering glow per jar, edge to edge.</p>
-      </div>
-      <div class="values__item reveal">
-        <span class="values__icon">🤲</span>
-        <h3>Made by hand</h3>
-        <p>Poured in small batches, never mass-produced.</p>
-      </div>
-      <div class="values__item reveal">
-        <span class="values__icon">♻️</span>
-        <h3>Reusable vessels</h3>
-        <p>Tumblers designed for a second life when the wax is gone.</p>
-      </div>
-    </section>
-
-    <!-- Collections -->
-    <section class="collections" id="collections">
-      <div class="section-head reveal">
-        <p class="eyebrow">Browse by mood</p>
-        <h2>Four worlds of scent</h2>
-        <p class="section-sub">Every fragrance belongs to a family. Find the one that matches your moment.</p>
-      </div>
-      <div class="collections__grid">
-        <button class="collection-card collection-card--fresh reveal" data-filter="fresh">
-          <span class="collection-card__emoji">🌊</span>
-          <h3>Fresh</h3>
-          <p>Crisp, clean &amp; airy</p>
-        </button>
-        <button class="collection-card collection-card--warm reveal" data-filter="warm">
-          <span class="collection-card__emoji">🍯</span>
-          <h3>Warm</h3>
-          <p>Sweet, cozy &amp; spiced</p>
-        </button>
-        <button class="collection-card collection-card--woody reveal" data-filter="woody">
-          <span class="collection-card__emoji">🪵</span>
-          <h3>Woody</h3>
-          <p>Smoky, earthy &amp; deep</p>
-        </button>
-        <button class="collection-card collection-card--floral reveal" data-filter="floral">
-          <span class="collection-card__emoji">🌸</span>
-          <h3>Floral</h3>
-          <p>Soft, romantic &amp; lush</p>
-        </button>
-      </div>
-    </section>
-
-    <!-- Shop / Products -->
-    <section class="shop" id="shop">
-      <div class="section-head reveal">
-        <p class="eyebrow">The collection</p>
-        <h2>Find your signature scent</h2>
-        <p class="section-sub">Eight fragrances, each hand-poured into a reusable amber-glass tumbler.</p>
-      </div>
-
-      <div class="filters" id="filters" role="tablist" aria-label="Filter candles by scent family">
-        <button class="filter is-active" data-filter="all">All</button>
-        <button class="filter" data-filter="fresh">Fresh</button>
-        <button class="filter" data-filter="warm">Warm</button>
-        <button class="filter" data-filter="woody">Woody</button>
-        <button class="filter" data-filter="floral">Floral</button>
-      </div>
-
-      <div class="products" id="products">
-        <!-- product cards injected by script.js -->
-      </div>
-    </section>
-
-    <!-- Scent Finder -->
-    <section class="finder" id="finder">
-      <div class="finder__glow" aria-hidden="true"></div>
-      <div class="finder__inner reveal">
-        <p class="eyebrow eyebrow--light">Not sure where to start?</p>
-        <h2>Find your scent in one tap</h2>
-        <p class="finder__sub">Tell us the mood you're after and we'll match you with the perfect candle.</p>
-
-        <div class="finder__moods" id="moods" role="group" aria-label="Choose a mood">
-          <button class="mood" data-mood="relax">🛁 Unwind</button>
-          <button class="mood" data-mood="cozy">🛋️ Get cozy</button>
-          <button class="mood" data-mood="focus">📚 Focus</button>
-          <button class="mood" data-mood="romance">💫 Romance</button>
-          <button class="mood" data-mood="energize">☀️ Energize</button>
+        <!-- 1. Format -->
+        <div class="panel">
+          <div class="panel__head">
+            <h2 class="panel__title"><span class="step">1</span> Choose a format</h2>
+          </div>
+          <div class="format-grid" id="formatGrid" role="radiogroup" aria-label="Tournament format">
+            <button class="format-card is-selected" role="radio" aria-checked="true" data-format="single" type="button">
+              <span class="format-card__icon" aria-hidden="true">🏆</span>
+              <span class="format-card__name">Single Elimination</span>
+              <span class="format-card__desc">Win or go home. Classic knockout bracket — byes handled automatically.</span>
+            </button>
+            <button class="format-card" role="radio" aria-checked="false" data-format="round-robin" type="button">
+              <span class="format-card__icon" aria-hidden="true">🔁</span>
+              <span class="format-card__name">Round Robin</span>
+              <span class="format-card__desc">Everyone plays everyone. Live standings decide the winner.</span>
+            </button>
+            <button class="format-card" role="radio" aria-checked="false" data-format="rr-playoffs" type="button">
+              <span class="format-card__icon" aria-hidden="true">🥇</span>
+              <span class="format-card__name">Pool Play + Playoffs</span>
+              <span class="format-card__desc">Round-robin pool, then the top teams advance to a knockout bracket.</span>
+            </button>
+          </div>
         </div>
 
-        <div class="finder__result" id="finderResult" aria-live="polite"></div>
-      </div>
-    </section>
+        <!-- 2. Rules -->
+        <div class="panel">
+          <div class="panel__head">
+            <h2 class="panel__title"><span class="step">2</span> Set the rules</h2>
+            <button class="link-btn" id="resetRules" type="button">Reset to FIBA 3x3</button>
+          </div>
 
-    <!-- Story -->
-    <section class="story" id="story">
-      <div class="story__art reveal" aria-hidden="true">
-        <div class="story__candle"><span class="story__flame"></span></div>
-        <div class="story__candle story__candle--sm"><span class="story__flame"></span></div>
-      </div>
-      <div class="story__text reveal">
-        <p class="eyebrow">Our story</p>
-        <h2>Born from one quiet evening</h2>
-        <p>
-          Ember &amp; Oak started in a tiny kitchen, with a single pot of melted
-          soy wax and a stubborn belief that a candle should do more than smell
-          nice — it should change the temperature of a whole room.
-        </p>
-        <p>
-          Today we still pour every candle by hand, blending fragrance oils with
-          natural essential oils until each scent feels honest, layered, and
-          unmistakably ours. No shortcuts, no synthetic harshness — just warmth
-          you can light.
-        </p>
-        <div class="story__stats">
-          <div><strong>40k+</strong><span>candles poured</span></div>
-          <div><strong>100%</strong><span>natural wax</span></div>
-          <div><strong>4.9★</strong><span>average rating</span></div>
+          <div class="rules-grid">
+            <label class="field">
+              <span class="field__label">Game to (points)</span>
+              <input class="field__input" id="ruleTarget" type="number" min="1" max="200" step="1" value="21" />
+              <span class="field__hint">First to this score wins the game.</span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Scoring style</span>
+              <select class="field__input" id="ruleScoring">
+                <option value="1-2" selected>FIBA 3x3 — 1 &amp; 2 pts</option>
+                <option value="2-3">Streetball — 2 &amp; 3 pts</option>
+                <option value="1-2-3">Custom — 1, 2 &amp; 3 pts</option>
+              </select>
+              <span class="field__hint">Which point buttons appear on the scoreboard.</span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Time limit (min)</span>
+              <input class="field__input" id="ruleTime" type="number" min="0" max="120" step="1" value="10" />
+              <span class="field__hint">Game clock length. Use 0 for no clock.</span>
+            </label>
+
+            <label class="field">
+              <span class="field__label">Courts</span>
+              <input class="field__input" id="ruleCourts" type="number" min="1" max="20" step="1" value="1" />
+              <span class="field__hint">How many games can run at once.</span>
+            </label>
+
+            <label class="field field--check">
+              <input type="checkbox" id="ruleWinBy2" />
+              <span class="field__label">Win by 2</span>
+              <span class="field__hint">Game continues past the target until a team leads by two.</span>
+            </label>
+
+            <label class="field field--check" id="dblRRField" hidden>
+              <input type="checkbox" id="ruleDoubleRR" />
+              <span class="field__label">Double round robin</span>
+              <span class="field__hint">Every pairing plays twice.</span>
+            </label>
+
+            <label class="field" id="advanceField" hidden>
+              <span class="field__label">Teams that advance</span>
+              <input class="field__input" id="ruleAdvance" type="number" min="2" max="64" step="1" value="4" />
+              <span class="field__hint">Top finishers from the pool make the playoff bracket.</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 3. Teams -->
+        <div class="panel">
+          <div class="panel__head">
+            <h2 class="panel__title"><span class="step">3</span> Add teams <span class="count-pill" id="teamCount">0</span></h2>
+            <div class="panel__head-actions">
+              <button class="link-btn" id="shuffleSeeds" type="button" title="Randomize the seeding order">Shuffle seeds</button>
+              <button class="link-btn link-btn--danger" id="clearTeams" type="button">Clear all</button>
+            </div>
+          </div>
+
+          <div class="teams" id="teamList" aria-label="Teams"></div>
+
+          <div class="team-add">
+            <span class="team-add__swatch" id="addSwatch" aria-hidden="true"></span>
+            <input class="team-add__input" id="teamInput" type="text" maxlength="32"
+                   placeholder="Team name — e.g. Court Kings" aria-label="New team name" />
+            <button class="btn btn--accent" id="addTeam" type="button">Add team</button>
+          </div>
+          <p class="team-add__hint">Tip: paste a list and we'll add one team per line. Click a team's dot to recolor it,
+            or expand it to add players.</p>
+        </div>
+
+        <!-- Generate -->
+        <div class="generate">
+          <button class="btn btn--big btn--accent" id="generateBtn" type="button">Generate bracket &amp; tip off →</button>
+          <p class="generate__note" id="generateNote">Add at least 2 teams to start.</p>
         </div>
       </div>
     </section>
 
-    <!-- Reviews -->
-    <section class="reviews" id="reviews">
-      <div class="section-head reveal">
-        <p class="eyebrow">Loved by 12,000+ homes</p>
-        <h2>What our people say</h2>
-      </div>
-      <div class="reviews__grid">
-        <figure class="review reveal">
-          <div class="review__stars">★★★★★</div>
-          <blockquote>"Smoked Cedar &amp; Leather makes my apartment smell like a cozy mountain cabin. I've bought it four times."</blockquote>
-          <figcaption>— Maya R., verified buyer</figcaption>
-        </figure>
-        <figure class="review reveal">
-          <div class="review__stars">★★★★★</div>
-          <blockquote>"The scent throw is unreal — one candle fills my whole downstairs. And it burns so evenly."</blockquote>
-          <figcaption>— Daniel K., verified buyer</figcaption>
-        </figure>
-        <figure class="review reveal">
-          <div class="review__stars">★★★★★</div>
-          <blockquote>"Sea Salt &amp; Sage is my forever scent. Fresh without being soapy. The jar is gorgeous too."</blockquote>
-          <figcaption>— Priya S., verified buyer</figcaption>
-        </figure>
+    <!-- ====================== GAMES / BRACKET VIEW ====================== -->
+    <section class="view" id="view-bracket" aria-label="Games">
+      <div class="wrap">
+        <div id="championBanner" class="champion" hidden></div>
+
+        <div class="games-toolbar">
+          <div class="games-toolbar__info" id="bracketInfo"></div>
+          <div class="games-toolbar__actions">
+            <button class="btn btn--ghost" id="printBtn" type="button" title="Print or save the bracket as a PDF">Print</button>
+            <button class="btn btn--ghost" id="startPlayoffsBtn" type="button" hidden>Start playoffs →</button>
+            <button class="btn btn--ghost" id="backToSetup" type="button">Edit setup</button>
+          </div>
+        </div>
+
+        <div id="bracketStage"></div>
       </div>
     </section>
 
-    <!-- Newsletter -->
-    <section class="newsletter">
-      <div class="newsletter__inner reveal">
-        <h2>Get 15% off your first candle</h2>
-        <p>Join the list for new scents, slow-living notes, and the occasional members-only burn.</p>
-        <form class="newsletter__form" id="newsletterForm" novalidate>
-          <label class="sr-only" for="email">Email address</label>
-          <input type="email" id="email" name="email" placeholder="you@example.com" required />
-          <button type="submit" class="btn btn--primary">Light me up</button>
-        </form>
-        <p class="newsletter__note" id="newsletterNote"></p>
+    <!-- ====================== STANDINGS VIEW ====================== -->
+    <section class="view" id="view-standings" aria-label="Standings">
+      <div class="wrap">
+        <div class="games-toolbar">
+          <div class="games-toolbar__info"><h2 class="section-title">Standings</h2></div>
+        </div>
+        <div id="standingsStage"></div>
       </div>
     </section>
   </main>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <span class="nav__logo-text">Ember <em>&amp;</em> Oak</span>
-        <p>Hand-poured candles &amp; signature scents, made in small batches.</p>
+  <!-- ====================== SCOREBOARD MODAL ====================== -->
+  <div class="modal" id="scoreModal" hidden>
+    <div class="modal__backdrop" data-close="1"></div>
+    <div class="modal__card scoreboard" role="dialog" aria-modal="true" aria-label="Scoreboard">
+      <button class="modal__close" id="scoreClose" type="button" aria-label="Close scoreboard">&times;</button>
+
+      <div class="scoreboard__meta">
+        <span id="sbStage" class="scoreboard__stage">Game</span>
+        <span class="scoreboard__clock" id="sbClock">--:--</span>
+        <div class="scoreboard__clock-ctrls">
+          <button class="chip" id="clockToggle" type="button">Start</button>
+          <button class="chip" id="clockReset" type="button">Reset</button>
+        </div>
       </div>
-      <div class="footer__col">
-        <h4>Shop</h4>
-        <a href="#shop">All candles</a>
-        <a href="#collections">Collections</a>
-        <a href="#finder">Scent finder</a>
-        <a href="#shop">Gift sets</a>
+
+      <div class="scoreboard__teams">
+        <!-- Team A -->
+        <div class="sb-team" id="sbTeamA">
+          <div class="sb-team__head">
+            <span class="sb-team__dot"></span>
+            <span class="sb-team__name">Team A</span>
+          </div>
+          <div class="sb-team__score" id="sbScoreA">0</div>
+          <div class="sb-team__buttons" id="sbBtnsA"></div>
+          <button class="sb-team__win btn btn--accent" data-side="A" type="button">Set winner</button>
+        </div>
+
+        <div class="scoreboard__vs">vs</div>
+
+        <!-- Team B -->
+        <div class="sb-team" id="sbTeamB">
+          <div class="sb-team__head">
+            <span class="sb-team__dot"></span>
+            <span class="sb-team__name">Team B</span>
+          </div>
+          <div class="sb-team__score" id="sbScoreB">0</div>
+          <div class="sb-team__buttons" id="sbBtnsB"></div>
+          <button class="sb-team__win btn btn--accent" data-side="B" type="button">Set winner</button>
+        </div>
       </div>
-      <div class="footer__col">
-        <h4>Company</h4>
-        <a href="#story">Our story</a>
-        <a href="#reviews">Reviews</a>
-        <a href="#">Sustainability</a>
-        <a href="#">Stockists</a>
-      </div>
-      <div class="footer__col">
-        <h4>Help</h4>
-        <a href="#">Shipping</a>
-        <a href="#">Returns</a>
-        <a href="#">Candle care</a>
-        <a href="#">Contact</a>
+
+      <p class="scoreboard__hint" id="sbHint"></p>
+
+      <div class="scoreboard__foot">
+        <button class="btn btn--ghost" id="sbClear" type="button">Reset score</button>
+        <button class="btn btn--accent" id="sbFinish" type="button">Finish game</button>
       </div>
     </div>
-    <div class="footer__bottom">
-      <p>© <span id="year"></span> Ember &amp; Oak. Crafted with warmth.</p>
-      <div class="footer__social" aria-label="Social media">
-        <a href="#" aria-label="Instagram">Instagram</a>
-        <a href="#" aria-label="Pinterest">Pinterest</a>
-        <a href="#" aria-label="TikTok">TikTok</a>
-      </div>
-    </div>
-  </footer>
+  </div>
 
   <!-- Toast -->
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+
+  <footer class="footer">
+    <p>Built for pickup runs, office leagues &amp; weekend shootouts. Everything stays in your browser. 🏀</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

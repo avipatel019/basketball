@@ -1,7 +1,9 @@
-# Ember & Oak — Candle Landing Page
+# Hoops3 — Open & Customizable 3v3 Tournament Maker 🏀
 
-A responsive, single-page marketing site for a hand-poured candle brand,
-showcasing different candles and their signature scents.
+Build and run your own 3-on-3 basketball tournament right in the browser.
+Pick a format, add as many teams as you want, bend the rules to fit your run,
+and keep score live. No accounts, no sign-up, no backend — everything saves to
+your browser's local storage.
 
 ## Preview
 
@@ -15,31 +17,60 @@ python3 -m http.server 8000
 
 ## Features
 
-- **Hero** with an animated, flickering CSS candle and glowing ambiance.
-- **Scent collections** — browse by mood: Fresh, Warm, Woody, Floral.
-- **Product grid** of 8 candles with full fragrance notes (top / heart / base),
-  price, and burn time. Filter by scent family.
-- **Scent Finder** — pick a mood ("Unwind", "Get cozy", "Romance"…) and get a
-  matched candle recommendation.
-- **Add-to-cart** counter with toast notifications.
-- **Reviews**, brand **story**, and a **newsletter** signup with validation.
-- Fully **responsive** with a mobile nav drawer, scroll-reveal animations, and a
-  `prefers-reduced-motion` fallback.
+- **Three formats**
+  - **Single Elimination** — classic knockout bracket. Any number of teams;
+    byes are seeded to the top teams automatically.
+  - **Round Robin** — everyone plays everyone (single or double), with live
+    standings. Schedule is built so no team plays twice in the same round.
+  - **Pool Play + Playoffs** — a round-robin pool, then the top _N_ teams
+    advance into a seeded knockout bracket.
+- **Fully customizable rules** — game target score, win-by-2, scoring style
+  (FIBA 3x3 1 & 2 pts, streetball 2 & 3, or custom), game clock length, and the
+  number of courts running at once.
+- **Unlimited teams** — add one at a time or paste a whole list. Recolor each
+  team, reorder seeds, shuffle the draw, and add optional player rosters.
+- **Live scoreboard** — per-game point buttons that match your scoring style, a
+  start/pause/reset game clock, automatic win detection, and one-tap "set
+  winner". Bracket winners advance automatically.
+- **Standings** with games played, W–L, points for/against, and differential
+  (with sensible tiebreakers).
+- **Champion** banner when the tournament is decided.
+- **Open & portable** — auto-saves as you go, **export** to a `.json` file and
+  **import** it back later or on another device, **print** a clean bracket, and
+  toggle **light/dark** themes.
+
+## Formats at a glance
+
+| Format | Best for | Decides winner by |
+| --- | --- | --- |
+| Single Elimination | Fast, one-day knockouts | Last team standing |
+| Round Robin | Small leagues, fairest schedule | Standings |
+| Pool Play + Playoffs | Bigger events | Pool seeds → bracket |
 
 ## Tech
 
-Plain HTML, CSS, and vanilla JavaScript — no frameworks. All candle artwork is
-rendered with CSS (no image assets), so the page is fully self-contained.
+Plain HTML, CSS, and vanilla JavaScript — no frameworks, no dependencies. The
+tournament engine (bracket seeding, round-robin scheduling, standings) is
+written as pure functions and exposed on `window.Hoops3` for tinkering in the
+console.
 
 ## Files
 
 | File | Purpose |
 | --- | --- |
-| `index.html` | Page structure and content |
-| `styles.css` | Styling, layout, and candle/flame artwork |
-| `script.js` | Product rendering, filtering, scent finder, cart, animations |
+| `index.html` | App structure: setup, games/bracket, standings, scoreboard |
+| `styles.css` | Theming (light/dark), layout, bracket & scoreboard styling |
+| `script.js` | State, persistence, tournament logic, rendering, scoring |
 
 ## Customizing
 
-Edit the `products` array in `script.js` to change candles, scents, prices, or
-colors. Brand colors and fonts live in the `:root` block of `styles.css`.
+- **Rules & format** live in the Setup tab — no code needed.
+- **Defaults** (starting rules, team colors) are in the `DEFAULT_RULES` and
+  `PALETTE` constants at the top of `script.js`.
+- **Brand colors / theme** are CSS variables in the `:root` and
+  `[data-theme]` blocks of `styles.css` (`--accent` is the basketball orange).
+
+## Data & privacy
+
+Everything stays on your device in `localStorage`. Use **Export** to back a
+tournament up or move it between devices; **New** clears the current one.
